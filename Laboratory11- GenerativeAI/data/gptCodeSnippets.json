@@ -1,0 +1,670 @@
+[
+    {
+        "type": "Sorting",
+        "specifications": "QuickSort algorithm - Sorts a list of integers\nparams: list of integers\nreturns: sorted list of integers",
+        "code": "def quicksort(arr):\n    \"\"\"\n    QuickSort algorithm - Sorts a list of integers\n    params: list of integers\n    returns: sorted list of integers\n    \"\"\"\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    left = [x for x in arr if x < pivot]\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    return quicksort(left) + middle + quicksort(right)"
+    },
+    {
+        "type": "Sorting",
+        "specifications": "MergeSort algorithm - Sorts a list of integers\nparams: list of integers\nreturns: sorted list of integers",
+        "code": "def merge_sort(arr):\n    \"\"\"\n    MergeSort algorithm - Sorts a list of integers\n    params: list of integers\n    returns: sorted list of integers\n    \"\"\"\n    if len(arr) <= 1:\n        return arr\n    mid = len(arr) // 2\n    left = merge_sort(arr[:mid])\n    right = merge_sort(arr[mid:])\n    return merge(left, right)\n\ndef merge(left, right):\n    \"\"\"\n    Helper function to merge two sorted lists\n    params: two sorted lists\n    returns: merged sorted list\n    \"\"\"\n    result = []\n    i = j = 0\n    while i < len(left) and j < len(right):\n        if left[i] < right[j]:\n            result.append(left[i])\n            i += 1\n        else:\n            result.append(right[j])\n            j += 1\n    result.extend(left[i:])\n    result.extend(right[j:])\n    return result"
+    },
+    {
+        "type": "Search",
+        "specifications": "Binary Search algorithm - Searches for a target value within a sorted list\nparams: sorted list of integers, target integer\nreturns: index of target if found, else -1",
+        "code": "def binary_search(arr, target):\n    \"\"\"\n    Binary Search algorithm - Searches for a target value within a sorted list\n    params: sorted list of integers, target integer\n    returns: index of target if found, else -1\n    \"\"\"\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1"
+    },
+    {
+        "type": "Search",
+        "specifications": "Linear Search algorithm - Searches for a target value within a list\nparams: list of integers, target integer\nreturns: index of target if found, else -1",
+        "code": "def linear_search(arr, target):\n    \"\"\"\n    Linear Search algorithm - Searches for a target value within a list\n    params: list of integers, target integer\n    returns: index of target if found, else -1\n    \"\"\"\n    for i in range(len(arr)):\n        if arr[i] == target:\n            return i\n    return -1"
+    },
+    {
+        "type": "Graph",
+        "specifications": "Depth-First Search (DFS) algorithm - Traverses all the vertices of a graph\nparams: graph represented as an adjacency list, starting vertex\nreturns: list of vertices in the order they were visited",
+        "code": "def dfs(graph, start):\n    \"\"\"\n    Depth-First Search (DFS) algorithm - Traverses all the vertices of a graph\n    params: graph represented as an adjacency list, starting vertex\n    returns: list of vertices in the order they were visited\n    \"\"\"\n    visited = set()\n    result = []\n    def dfs_helper(v):\n        if v not in visited:\n            visited.add(v)\n            result.append(v)\n            for neighbor in graph[v]:\n                dfs_helper(neighbor)\n    dfs_helper(start)\n    return result"
+    },
+    {
+        "type": "Graph",
+        "specifications": "Breadth-First Search (BFS) algorithm - Traverses all the vertices of a graph\nparams: graph represented as an adjacency list, starting vertex\nreturns: list of vertices in the order they were visited",
+        "code": "from collections import deque\n\ndef bfs(graph, start):\n    \"\"\"\n    Breadth-First Search (BFS) algorithm - Traverses all the vertices of a graph\n    params: graph represented as an adjacency list, starting vertex\n    returns: list of vertices in the order they were visited\n    \"\"\"\n    visited = set()\n    queue = deque([start])\n    result = []\n    while queue:\n        vertex = queue.popleft()\n        if vertex not in visited:\n            visited.add(vertex)\n            result.append(vertex)\n            queue.extend(graph[vertex])\n    return result"
+    },
+    {
+        "type": "Dynamic Programming",
+        "specifications": "Fibonacci sequence using dynamic programming\nparams: n (position in Fibonacci sequence)\nreturns: nth Fibonacci number",
+        "code": "def fibonacci(n):\n    \"\"\"\n    Fibonacci sequence using dynamic programming\n    params: n (position in Fibonacci sequence)\n    returns: nth Fibonacci number\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    fib = [0] * (n + 1)\n    fib[1] = 1\n    for i in range(2, n + 1):\n        fib[i] = fib[i - 1] + fib[i - 2]\n    return fib[n]"
+    },
+    {
+        "type": "Dynamic Programming",
+        "specifications": "Longest Common Subsequence (LCS) algorithm\nparams: two strings\nreturns: length of the longest common subsequence",
+        "code": "def lcs(X, Y):\n    \"\"\"\n    Longest Common Subsequence (LCS) algorithm\n    params: two strings\n    returns: length of the longest common subsequence\n    \"\"\"\n    m = len(X)\n    n = len(Y)\n    L = [[None] * (n + 1) for i in range(m + 1)]\n    for i in range(m + 1):\n        for j in range(n + 1):\n            if i == 0 or j == 0:\n                L[i][j] = 0\n            elif X[i - 1] == Y[j - 1]:\n                L[i][j] = L[i - 1][j - 1] + 1\n            else:\n                L[i][j] = max(L[i - 1][j], L[i][j - 1])\n    return L[m][n]"
+    },
+    {
+        "type": "String",
+        "specifications": "KMP (Knuth-Morris-Pratt) Pattern Matching algorithm\nparams: text and pattern strings\nreturns: starting index of the first occurrence of the pattern in the text or -1 if not found",
+        "code": "def kmp_search(text, pattern):\n    \"\"\"\n    KMP (Knuth-Morris-Pratt) Pattern Matching algorithm\n    params: text and pattern strings\n    returns: starting index of the first occurrence of the pattern in the text or -1 if not found\n    \"\"\"\n    def compute_lps(pattern):\n        lps = [0] * len(pattern)\n        length = 0\n        i = 1\n        while i < len(pattern):\n            if pattern[i] == pattern[length]:\n                length += 1\n                lps[i] = length\n                i += 1\n            else:\n                if length != 0:\n                    length = lps[length - 1]\n                else:\n                    lps[i] = 0\n                    i += 1\n        return lps\n\n    lps = compute_lps(pattern)\n    i = j = 0\n    while i < len(text):\n        if pattern[j] == text[i]:\n            i += 1\n            j += 1\n        if j == len(pattern):\n            return i - j\n        elif i < len(text) and pattern[j] != text[i]:\n            if j != 0:\n                j = lps[j - 1]\n            else:\n                i += 1\n    return -1"
+    },
+    {
+        "type": "String",
+        "specifications": "Rabin-Karp Pattern Matching algorithm\nparams: text and pattern strings\nreturns: starting index of the first occurrence of the pattern in the text or -1 if not found",
+        "code": "def rabin_karp(text, pattern):\n    \"\"\"\n    Rabin-Karp Pattern Matching algorithm\n    params: text and pattern strings\n    returns: starting index of the first occurrence of the pattern in the text or -1 if not found\n    \"\"\"\n    d = 256\n    q = 101\n    m = len(pattern)\n    n = len(text)\n    p = 0\n    t = 0\n    h = 1\n    for i in range(m-1):\n        h = (h * d) % q\n    for i in range(m):\n        p = (d * p + ord(pattern[i])) % q\n        t = (d * t + ord(text[i])) % q\n    for i in range(n - m + 1):\n        if p == t:\n            if text[i:i + m] == pattern:\n                return i\n        if i < n - m:\n            t = (d * (t - ord(text[i]) * h) + ord(text[i + m])) % q\n            if t < 0:\n                t = t + q\n    return -1"
+    },
+    {
+        "type": "Data Structures",
+        "specifications": "Stack implementation using list\nmethods: push, pop, peek, is_empty",
+        "code": "class Stack:\n    \"\"\"\n    Stack implementation using list\n    methods: push, pop, peek, is_empty\n    \"\"\"\n    def __init__(self):\n        self.items = []\n\n    def push(self, item):\n        self.items.append(item)\n\n    def pop(self):\n        if not self.is_empty():\n            return self.items.pop()\n\n    def peek(self):\n        if not self.is_empty():\n            return self.items[-1]\n\n    def is_empty(self):\n        return len(self.items) == 0"
+    },
+    {
+        "type": "Data Structures",
+        "specifications": "Queue implementation using list\nmethods: enqueue, dequeue, is_empty",
+        "code": "class Queue:\n    \"\"\"\n    Queue implementation using list\n    methods: enqueue, dequeue, is_empty\n    \"\"\"\n    def __init__(self):\n        self.items = []\n\n    def enqueue(self, item):\n        self.items.insert(0, item)\n\n    def dequeue(self):\n        if not self.is_empty():\n            return self.items.pop()\n\n    def is_empty(self):\n        return len(self.items) == 0"
+    },
+    {
+        "type": "Data Structures",
+        "specifications": "Linked List implementation\nmethods: insert, delete, search",
+        "code": "class Node:\n    def __init__(self, data=None):\n        self.data = data\n        self.next = None\n\nclass LinkedList:\n    \"\"\"\n    Linked List implementation\n    methods: insert, delete, search\n    \"\"\"\n    def __init__(self):\n        self.head = None\n\n    def insert(self, data):\n        new_node = Node(data)\n        new_node.next = self.head\n        self.head = new_node\n\n    def delete(self, key):\n        temp = self.head\n        if temp is not None:\n            if temp.data == key:\n                self.head = temp.next\n                temp = None\n                return\n        while temp is not None:\n            if temp.data == key:\n                break\n            prev = temp\n            temp = temp.next\n        if temp == None:\n            return\n        prev.next = temp.next\n        temp = None\n\n    def search(self, key):\n        current = self.head\n        while current is not None:\n            if current.data == key:\n                return True\n            current = current.next\n        return False"
+    },
+    {
+        "type": "Data Structures",
+        "specifications": "Binary Search Tree implementation\nmethods: insert, search, inorder",
+        "code": "class TreeNode:\n    def __init__(self, key):\n        self.left = None\n        self.right = None\n        self.val = key\n\nclass BinarySearchTree:\n    \"\"\"\n    Binary Search Tree implementation\n    methods: insert, search, inorder\n    \"\"\"\n    def __init__(self):\n        self.root = None\n\n    def insert(self, key):\n        if self.root is None:\n            self.root = TreeNode(key)\n        else:\n            self._insert(self.root, key)\n\n    def _insert(self, root, key):\n        if key < root.val:\n            if root.left is None:\n                root.left = TreeNode(key)\n            else:\n                self._insert(root.left, key)\n        else:\n            if root.right is None:\n                root.right = TreeNode(key)\n            else:\n                self._insert(root.right, key)\n\n    def search(self, key):\n        return self._search(self.root, key)\n\n    def _search(self, root, key):\n        if root is None or root.val == key:\n            return root\n        if key < root.val:\n            return self._search(root.left, key)\n        return self._search(root.right, key)\n\n    def inorder(self):\n        return self._inorder(self.root)\n\n    def _inorder(self, root):\n        res = []\n        if root:\n            res = self._inorder(root.left)\n            res.append(root.val)\n            res = res + self._inorder(root.right)\n        return res"
+    },
+    {
+        "type": "Math",
+        "specifications": "Euclidean algorithm for GCD\nparams: two integers\nreturns: greatest common divisor of the two integers",
+        "code": "def gcd(a, b):\n    \"\"\"\n    Euclidean algorithm for GCD\n    params: two integers\n    returns: greatest common divisor of the two integers\n    \"\"\"\n    while b:\n        a, b = b, a % b\n    return a"
+    },
+    {
+        "type": "Math",
+        "specifications": "Sieve of Eratosthenes - Find all prime numbers up to a given limit\nparams: integer limit\nreturns: list of prime numbers up to the limit",
+        "code": "def sieve_of_eratosthenes(limit):\n    \"\"\"\n    Sieve of Eratosthenes - Find all prime numbers up to a given limit\n    params: integer limit\n    returns: list of prime numbers up to the limit\n    \"\"\"\n    primes = [True] * (limit + 1)\n    p = 2\n    while p * p <= limit:\n        if primes[p]:\n            for i in range(p * p, limit + 1, p):\n                primes[i] = False\n        p += 1\n    return [p for p in range(2, limit + 1) if primes[p]]"
+    },
+    {
+        "type": "Geometry",
+        "specifications": "Calculate the area of a circle\nparams: radius\nreturns: area of the circle",
+        "code": "import math\n\ndef area_of_circle(radius):\n    \"\"\"\n    Calculate the area of a circle\n    params: radius\n    returns: area of the circle\n    \"\"\"\n    return math.pi * (radius ** 2)"
+    },
+    {
+        "type": "Geometry",
+        "specifications": "Calculate the area of a rectangle\nparams: width, height\nreturns: area of the rectangle",
+        "code": "def area_of_rectangle(width, height):\n    \"\"\"\n    Calculate the area of a rectangle\n    params: width, height\n    returns: area of the rectangle\n    \"\"\"\n    return width * height"
+    },
+    {
+        "type": "Geometry",
+        "specifications": "Calculate the area of a triangle\nparams: base, height\nreturns: area of the triangle",
+        "code": "def area_of_triangle(base, height):\n    \"\"\"\n    Calculate the area of a triangle\n    params: base, height\n    returns: area of the triangle\n    \"\"\"\n    return 0.5 * base * height"
+    },
+    {
+        "type": "Statistics",
+        "specifications": "Calculate the mean of a list of numbers\nparams: list of numbers\nreturns: mean of the numbers",
+        "code": "def mean(numbers):\n    \"\"\"\n    Calculate the mean of a list of numbers\n    params: list of numbers\n    returns: mean of the numbers\n    \"\"\"\n    return sum(numbers) / len(numbers)"
+    },
+    {
+        "type": "Statistics",
+        "specifications": "Calculate the median of a list of numbers\nparams: list of numbers\nreturns: median of the numbers",
+        "code": "def median(numbers):\n    \"\"\"\n    Calculate the median of a list of numbers\n    params: list of numbers\n    returns: median of the numbers\n    \"\"\"\n    numbers.sort()\n    n = len(numbers)\n    mid = n // 2\n    if n % 2 == 0:\n        return (numbers[mid - 1] + numbers[mid]) / 2\n    else:\n        return numbers[mid]"
+    },
+    {
+        "type": "Statistics",
+        "specifications": "Calculate the mode of a list of numbers\nparams: list of numbers\nreturns: mode of the numbers",
+        "code": "from collections import Counter\n\ndef mode(numbers):\n    \"\"\"\n    Calculate the mode of a list of numbers\n    params: list of numbers\n    returns: mode of the numbers\n    \"\"\"\n    count = Counter(numbers)\n    max_count = max(count.values())\n    return [k for k, v in count.items() if v == max_count]"
+    },
+    {
+        "type": "Statistics",
+        "specifications": "Calculate the standard deviation of a list of numbers\nparams: list of numbers\nreturns: standard deviation of the numbers",
+        "code": "import math\n\ndef standard_deviation(numbers):\n    \"\"\"\n    Calculate the standard deviation of a list of numbers\n    params: list of numbers\n    returns: standard deviation of the numbers\n    \"\"\"\n    mean_value = mean(numbers)\n    variance = sum((x - mean_value) ** 2 for x in numbers) / len(numbers)\n    return math.sqrt(variance)"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Hello World program\nparams: None\nreturns: None",
+        "code": "print('Hello World')"
+    },
+    {
+        "type": "Variables",
+        "specifications": "Assigning values to variables\nparams: None\nreturns: None",
+        "code": "a = 5\nb = 'Hello'\nc = 3.14"
+    },
+    {
+        "type": "Arithmetic Operations",
+        "specifications": "Performing basic arithmetic operations\nparams: None\nreturns: None",
+        "code": "sum_result = 5 + 3\nsub_result = 10 - 2\nmul_result = 4 * 7\ndiv_result = 16 / 2"
+    },
+    {
+        "type": "Comparison Operations",
+        "specifications": "Using comparison operators\nparams: None\nreturns: None",
+        "code": "is_equal = (5 == 5)\nis_not_equal = (5 != 3)\nis_greater = (7 > 3)\nis_less = (2 < 5)"
+    },
+    {
+        "type": "Logical Operations",
+        "specifications": "Using logical operators\nparams: None\nreturns: None",
+        "code": "and_result = (5 > 3 and 2 < 4)\nor_result = (5 < 3 or 2 < 4)\nnot_result = not (5 < 3)"
+    },
+    {
+        "type": "String Operations",
+        "specifications": "Basic string operations\nparams: None\nreturns: None",
+        "code": "full_string = 'Hello' + ' ' + 'World'\nrepeated_string = 'Hello' * 3\nstring_length = len('Hello')"
+    },
+    {
+        "type": "If Statements",
+        "specifications": "Basic if-else statement\nparams: None\nreturns: None",
+        "code": "num = 10\nif num > 0:\n    result = 'Positive'\nelif num == 0:\n    result = 'Zero'\nelse:\n    result = 'Negative'"
+    },
+    {
+        "type": "For Loops",
+        "specifications": "Iterating over a range\nparams: None\nreturns: None",
+        "code": "for i in range(5):\n    print(i)"
+    },
+    {
+        "type": "While Loops",
+        "specifications": "Basic while loop\nparams: None\nreturns: None",
+        "code": "count = 0\nwhile count < 5:\n    print(count)\n    count += 1"
+    },
+    {
+        "type": "Nested Loops",
+        "specifications": "Using nested for loops\nparams: None\nreturns: None",
+        "code": "for i in range(2):\n    for j in range(3):\n        print(f'Row {i}, Column {j}')"
+    },
+    {
+        "type": "Functions",
+        "specifications": "Defining and calling a function\nparams: None\nreturns: None",
+        "code": "def add(a, b):\n    return a + b\n\nresult = add(3, 4)"
+    },
+    {
+        "type": "Lambda Functions",
+        "specifications": "Using lambda functions\nparams: None\nreturns: None",
+        "code": "multiply = lambda x, y: x * y\n\nresult = multiply(5, 6)"
+    },
+    {
+        "type": "Modules",
+        "specifications": "Importing and using modules\nparams: None\nreturns: None",
+        "code": "import math\n\nsquare_root = math.sqrt(16)"
+    },
+    {
+        "type": "Built-in Functions",
+        "specifications": "Using built-in functions\nparams: None\nreturns: None",
+        "code": "length = len([1, 2, 3, 4, 5])"
+    },
+    {
+        "type": "Lists",
+        "specifications": "Basic list operations\nparams: None\nreturns: None",
+        "code": "my_list = [1, 2, 3]\nmy_list.append(4)\nmy_list.remove(2)\nfirst_element = my_list[0]"
+    },
+    {
+        "type": "Tuples",
+        "specifications": "Basic tuple operations\nparams: None\nreturns: None",
+        "code": "my_tuple = (1, 2, 3)\nfirst_element = my_tuple[0]"
+    },
+    {
+        "type": "Dictionaries",
+        "specifications": "Basic dictionary operations\nparams: None\nreturns: None",
+        "code": "my_dict = {'a': 1, 'b': 2}\nmy_dict['c'] = 3\ndel my_dict['b']\nvalue_a = my_dict['a']"
+    },
+    {
+        "type": "Sets",
+        "specifications": "Basic set operations\nparams: None\nreturns: None",
+        "code": "my_set = {1, 2, 3}\nmy_set.add(4)\nmy_set.remove(2)\nanother_set = {3, 4, 5}\nunion_set = my_set.union(another_set)"
+    },
+    {
+        "type": "Sorting",
+        "specifications": "BubbleSort algorithm - Sorts a list of integers\nparams: list of integers\nreturns: sorted list of integers",
+        "code": "def bubble_sort(arr):\n    \"\"\"\n    BubbleSort algorithm - Sorts a list of integers\n    params: list of integers\n    returns: sorted list of integers\n    \"\"\"\n    n = len(arr)\n    for i in range(n):\n        for j in range(0, n-i-1):\n            if arr[j] > arr[j+1]:\n                arr[j], arr[j+1] = arr[j+1], arr[j]\n    return arr"
+    },
+    {
+        "type": "Sorting",
+        "specifications": "InsertionSort algorithm - Sorts a list of integers\nparams: list of integers\nreturns: sorted list of integers",
+        "code": "def insertion_sort(arr):\n    \"\"\"\n    InsertionSort algorithm - Sorts a list of integers\n    params: list of integers\n    returns: sorted list of integers\n    \"\"\"\n    for i in range(1, len(arr)):\n        key = arr[i]\n        j = i-1\n        while j >= 0 and key < arr[j]:\n            arr[j + 1] = arr[j]\n            j -= 1\n        arr[j + 1] = key\n    return arr"
+    },
+    {
+        "type": "Sorting",
+        "specifications": "SelectionSort algorithm - Sorts a list of integers\nparams: list of integers\nreturns: sorted list of integers",
+        "code": "def selection_sort(arr):\n    \"\"\"\n    SelectionSort algorithm - Sorts a list of integers\n    params: list of integers\n    returns: sorted list of integers\n    \"\"\"\n    for i in range(len(arr)):\n        min_idx = i\n        for j in range(i+1, len(arr)):\n            if arr[min_idx] > arr[j]:\n                min_idx = j\n        arr[i], arr[min_idx] = arr[min_idx], arr[i]\n    return arr"
+    },
+    {
+        "type": "Graphs",
+        "specifications": "Dijkstra's algorithm - Finds the shortest path from a starting node to all other nodes\nparams: graph represented as an adjacency list, starting vertex\nreturns: dictionary of shortest distances from start to each vertex",
+        "code": "import heapq\n\ndef dijkstra(graph, start):\n    \"\"\"\n    Dijkstra's algorithm - Finds the shortest path from a starting node to all other nodes\n    params: graph represented as an adjacency list, starting vertex\n    returns: dictionary of shortest distances from start to each vertex\n    \"\"\"\n    pq = [(0, start)]\n    distances = {start: 0}\n    while pq:\n        (cost, u) = heapq.heappop(pq)\n        for v, weight in graph[u].items():\n            distance = cost + weight\n            if v not in distances or distance < distances[v]:\n                distances[v] = distance\n                heapq.heappush(pq, (distance, v))\n    return distances"
+    },
+    {
+        "type": "Graphs",
+        "specifications": "Prim's algorithm - Finds the Minimum Spanning Tree (MST) of a graph\nparams: graph represented as an adjacency list\nreturns: list of edges in the MST",
+        "code": "import heapq\n\ndef prim(graph):\n    \"\"\"\n    Prim's algorithm - Finds the Minimum Spanning Tree (MST) of a graph\n    params: graph represented as an adjacency list\n    returns: list of edges in the MST\n    \"\"\"\n    start = next(iter(graph))\n    visited = set([start])\n    edges = [(cost, start, v) for v, cost in graph[start].items()]\n    heapq.heapify(edges)\n    mst = []\n    while edges:\n        cost, u, v = heapq.heappop(edges)\n        if v not in visited:\n            visited.add(v)\n            mst.append((u, v, cost))\n            for next_v, next_cost in graph[v].items():\n                if next_v not in visited:\n                    heapq.heappush(edges, (next_cost, v, next_v))\n    return mst"
+    },
+  {
+        "type": "Dynamic Programming",
+        "specifications": "Knapsack algorithm - Solves the 0/1 knapsack problem\nparams: list of item weights, list of item values, knapsack capacity\nreturns: maximum value that can be carried",
+        "code": "def knapsack(weights, values, capacity):\n    \"\"\"\n    Knapsack algorithm - Solves the 0/1 knapsack problem\n    params: list of item weights, list of item values, knapsack capacity\n    returns: maximum value that can be carried\n    \"\"\"\n    n = len(weights)\n    dp = [[0 for x in range(capacity + 1)] for x in range(n + 1)]\n    for i in range(n + 1):\n        for w in range(capacity + 1):\n            if i == 0 or w == 0:\n                dp[i][w] = 0\n            elif weights[i-1] <= w:\n                dp[i][w] = max(values[i-1] + dp[i-1][w-weights[i-1]], dp[i-1][w])\n            else:\n                dp[i][w] = dp[i-1][w]\n    return dp[n][capacity]"
+    },
+    {
+        "type": "Dynamic Programming",
+        "specifications": "Longest Increasing Subsequence (LIS) algorithm\nparams: list of integers\nreturns: length of the longest increasing subsequence",
+        "code": "def lis(arr):\n    \"\"\"\n    Longest Increasing Subsequence (LIS) algorithm\n    params: list of integers\n    returns: length of the longest increasing subsequence\n    \"\"\"\n    n = len(arr)\n    lis = [1] * n\n    for i in range(1, n):\n        for j in range(0, i):\n            if arr[i] > arr[j] and lis[i] < lis[j] + 1:\n                lis[i] = lis[j] + 1\n    return max(lis)"
+    },
+    {
+        "type": "String",
+        "specifications": "Longest Palindromic Subsequence (LPS) algorithm\nparams: string\nreturns: length of the longest palindromic subsequence",
+        "code": "def lps(seq):\n    \"\"\"\n    Longest Palindromic Subsequence (LPS) algorithm\n    params: string\n    returns: length of the longest palindromic subsequence\n    \"\"\"\n    n = len(seq)\n    L = [[0 for x in range(n)] for x in range(n)]\n    for i in range(n):\n        L[i][i] = 1\n    for cl in range(2, n+1):\n        for i in range(n - cl + 1):\n            j = i + cl - 1\n            if seq[i] == seq[j] and cl == 2:\n                L[i][j] = 2\n            elif seq[i] == seq[j]:\n                L[i][j] = L[i + 1][j - 1] + 2\n            else:\n                L[i][j] = max(L[i][j - 1], L[i + 1][j])\n    return L[0][n - 1]"
+    },
+    {
+        "type": "String",
+        "specifications": "Z-algorithm - Finds all occurrences of a pattern in a text\nparams: text and pattern strings\nreturns: list of starting indices of the pattern in the text",
+        "code": "def z_algorithm(text, pattern):\n    \"\"\"\n    Z-algorithm - Finds all occurrences of a pattern in a text\n    params: text and pattern strings\n    returns: list of starting indices of the pattern in the text\n    \"\"\"\n    concat = pattern + '$' + text\n    l = len(concat)\n    Z = [0] * l\n    left, right, K = 0, 0, 0\n    for i in range(1, l):\n        if i > right:\n            left, right = i, i\n            while right < l and concat[right] == concat[right - left]:\n                right += 1\n            Z[i] = right - left\n            right -= 1\n        else:\n            K = i - left\n            if Z[K] < right - i + 1:\n                Z[i] = Z[K]\n            else:\n                left = i\n                while right < l and concat[right] == concat[right - left]:\n                    right += 1\n                Z[i] = right - left\n                right -= 1\n    result = []\n    for i in range(len(Z)):\n        if Z[i] == len(pattern):\n            result.append(i - len(pattern) - 1)\n    return result"
+    },
+    {
+        "type": "Math",
+        "specifications": "Finding the factorial of a number\nparams: integer n\nreturns: factorial of n",
+        "code": "def factorial(n):\n    \"\"\"\n    Finding the factorial of a number\n    params: integer n\n    returns: factorial of n\n    \"\"\"\n    if n == 0:\n        return 1\n    else:\n        return n * factorial(n-1)"
+    },
+    {
+        "type": "Math",
+        "specifications": "Finding the nth Fibonacci number using recursion\nparams: integer n\nreturns: nth Fibonacci number",
+        "code": "def fibonacci_recursive(n):\n    \"\"\"\n    Finding the nth Fibonacci number using recursion\n    params: integer n\n    returns: nth Fibonacci number\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fibonacci_recursive(n-1) + fibonacci_recursive(n-2)"
+    },
+    {
+        "type": "Graph",
+        "specifications": "Topological Sort - Orders the vertices of a directed acyclic graph (DAG) in a linear ordering\nparams: graph represented as an adjacency list\nreturns: list of vertices in topological order",
+        "code": "def topological_sort(graph):\n    \"\"\"\n    Topological Sort - Orders the vertices of a directed acyclic graph (DAG) in a linear ordering\n    params: graph represented as an adjacency list\n    returns: list of vertices in topological order\n    \"\"\"\n    visited = set()\n    stack = []\n    def dfs(v):\n        visited.add(v)\n        for neighbor in graph[v]:\n            if neighbor not in visited:\n                dfs(neighbor)\n        stack.append(v)\n    for vertex in graph:\n        if vertex not in visited:\n            dfs(vertex)\n    return stack[::-1]"
+    },
+    {
+        "type": "Graph",
+        "specifications": "Kruskal's algorithm - Finds the Minimum Spanning Tree (MST) of a graph\nparams: graph represented as a list of edges\nreturns: list of edges in the MST",
+        "code": "class DisjointSet:\n    def __init__(self, n):\n        self.parent = list(range(n))\n        self.rank = [0] * n\n\n    def find(self, u):\n        if self.parent[u] != u:\n            self.parent[u] = self.find(self.parent[u])\n        return self.parent[u]\n\n    def union(self, u, v):\n        root_u = self.find(u)\n        root_v = self.find(v)\n        if root_u != root_v:\n            if self.rank[root_u] > self.rank[root_v]:\n                self.parent[root_v] = root_u\n            else:\n                self.parent[root_u] = root_v\n                if self.rank[root_u] == self.rank[root_v]:\n                    self.rank[root_v] += 1\n\ndef kruskal(edges, n):\n    \"\"\"\n    Kruskal's algorithm - Finds the Minimum Spanning Tree (MST) of a graph\n    params: graph represented as a list of edges\n    returns: list of edges in the MST\n    \"\"\"\n    edges.sort(key=lambda x: x[2])\n    ds = DisjointSet(n)\n    mst = []\n    for u, v, weight in edges:\n        if ds.find(u) != ds.find(v):\n            ds.union(u, v)\n            mst.append((u, v, weight))\n    return mst"
+    },
+    {
+        "type": "Data Structures",
+        "specifications": "Heap implementation\nmethods: heappush, heappop, heapify",
+        "code": "import heapq\n\nclass Heap:\n    \"\"\"\n    Heap implementation\n    methods: heappush, heappop, heapify\n    \"\"\"\n    def __init__(self):\n        self.heap = []\n\n    def heappush(self, item):\n        heapq.heappush(self.heap, item)\n\n    def heappop(self):\n        return heapq.heappop(self.heap)\n\n    def heapify(self, lst):\n        heapq.heapify(lst)"
+    },
+    {
+        "type": "Dynamic Programming",
+        "specifications": "Edit Distance algorithm (Levenshtein Distance)\nparams: two strings\nreturns: minimum number of operations required to convert one string to another",
+        "code": "def edit_distance(str1, str2):\n    \"\"\"\n    Edit Distance algorithm (Levenshtein Distance)\n    params: two strings\n    returns: minimum number of operations required to convert one string to another\n    \"\"\"\n    m = len(str1)\n    n = len(str2)\n    dp = [[0 for x in range(n + 1)] for x in range(m + 1)]\n    for i in range(m + 1):\n        for j in range(n + 1):\n            if i == 0:\n                dp[i][j] = j\n            elif j == 0:\n                dp[i][j] = i\n            elif str1[i-1] == str2[j-1]:\n                dp[i][j] = dp[i-1][j-1]\n            else:\n                dp[i][j] = 1 + min(dp[i][j-1], dp[i-1][j], dp[i-1][j-1])\n    return dp[m][n]"
+    },
+    {
+        "type": "Data Structures",
+        "specifications": "Trie implementation\nmethods: insert, search",
+        "code": "class TrieNode:\n    def __init__(self):\n        self.children = {}\n        self.is_end_of_word = False\n\nclass Trie:\n    \"\"\"\n    Trie implementation\n    methods: insert, search\n    \"\"\"\n    def __init__(self):\n        self.root = TrieNode()\n\n    def insert(self, word):\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                node.children[char] = TrieNode()\n            node = node.children[char]\n        node.is_end_of_word = True\n\n    def search(self, word):\n        node = self.root\n        for char in word:\n            if char not in node.children:\n                return False\n            node = node.children[char]\n        return node.is_end_of_word"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "FizzBuzz - Prints numbers from 1 to n, but for multiples of three prints 'Fizz' instead of the number, and for multiples of five prints 'Buzz'\nparams: integer n\nreturns: None",
+        "code": "def fizzbuzz(n):\n    \"\"\"\n    FizzBuzz - Prints numbers from 1 to n, but for multiples of three prints 'Fizz' instead of the number, and for multiples of five prints 'Buzz'\n    params: integer n\n    returns: None\n    \"\"\"\n    for i in range(1, n+1):\n        if i % 3 == 0 and i % 5 == 0:\n            print('FizzBuzz')\n        elif i % 3 == 0:\n            print('Fizz')\n        elif i % 5 == 0:\n            print('Buzz')\n        else:\n            print(i)"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Palindrome Check - Checks if a given string is a palindrome\nparams: string\nreturns: True if the string is a palindrome, False otherwise",
+        "code": "def is_palindrome(s):\n    \"\"\"\n    Palindrome Check - Checks if a given string is a palindrome\n    params: string\n    returns: True if the string is a palindrome, False otherwise\n    \"\"\"\n    return s == s[::-1]"
+    },
+    {
+        "type": "Math",
+        "specifications": "Check if a number is prime\nparams: integer n\nreturns: True if the number is prime, False otherwise",
+        "code": "def is_prime(n):\n    \"\"\"\n    Check if a number is prime\n    params: integer n\n    returns: True if the number is prime, False otherwise\n    \"\"\"\n    if n <= 1:\n        return False\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            return False\n    return True"
+    },
+    {
+        "type": "Data Structures",
+        "specifications": "Queue implementation using collections.deque\nmethods: enqueue, dequeue, is_empty",
+        "code": "from collections import deque\n\nclass Queue:\n    \"\"\"\n    Queue implementation using collections.deque\n    methods: enqueue, dequeue, is_empty\n    \"\"\"\n    def __init__(self):\n        self.queue = deque()\n\n    def enqueue(self, item):\n        self.queue.append(item)\n\n    def dequeue(self):\n        if not self.is_empty():\n            return self.queue.popleft()\n\n    def is_empty(self):\n        return len(self.queue) == 0"
+    },
+    {
+        "type": "Data Structures",
+        "specifications": "Circular Queue implementation\nmethods: enqueue, dequeue, is_empty, is_full",
+        "code": "class CircularQueue:\n    \"\"\"\n    Circular Queue implementation\n    methods: enqueue, dequeue, is_empty, is_full\n    \"\"\"\n    def __init__(self, size):\n        self.size = size\n        self.queue = [None] * size\n        self.front = self.rear = -1\n\n    def is_empty(self):\n        return self.front == -1\n\n    def is_full(self):\n        return (self.rear + 1) % self.size == self.front\n\n    def enqueue(self, item):\n        if self.is_full():\n            return\n        if self.is_empty():\n            self.front = 0\n        self.rear = (self.rear + 1) % self.size\n        self.queue[self.rear] = item\n\n    def dequeue(self):\n        if self.is_empty():\n            return\n        item = self.queue[self.front]\n        if self.front == self.rear:\n            self.front = self.rear = -1\n        else:\n            self.front = (self.front + 1) % self.size\n        return item"
+    },
+   {
+        "type": "String",
+        "specifications": "Determine the last (alphabetically) word in a text containing multiple words separated by spaces\nparams: text (string)\nreturns: last word (string)",
+        "code": "def last_alphabetical_word(text):\n    \"\"\"\n    Determine the last (alphabetically) word in a text containing multiple words separated by spaces\n    params: text (string)\n    returns: last word (string)\n    \"\"\"\n    words = text.split()\n    return max(words)"
+    },
+    {
+        "type": "Math",
+        "specifications": "Calculate the Euclidean distance between two points\nparams: two tuples representing the coordinates of the points\nreturns: Euclidean distance (float)",
+        "code": "def euclidean_distance(point1, point2):\n    \"\"\"\n    Calculate the Euclidean distance between two points\n    params: two tuples representing the coordinates of the points\n    returns: Euclidean distance (float)\n    \"\"\"\n    return ((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2) ** 0.5"
+    },
+    {
+        "type": "Math",
+        "specifications": "Calculate the dot product of two sparse vectors\nparams: two lists of real numbers\nreturns: dot product (float)",
+        "code": "def dot_product_sparse_vectors(vec1, vec2):\n    \"\"\"\n    Calculate the dot product of two sparse vectors\n    params: two lists of real numbers\n    returns: dot product (float)\n    \"\"\"\n    return sum(x * y for x, y in zip(vec1, vec2) if x != 0 and y != 0)"
+    },
+    {
+        "type": "String",
+        "specifications": "Determine words that appear exactly once in a text\nparams: text (string)\nreturns: list of words that appear exactly once (list of strings)",
+        "code": "from collections import Counter\n\ndef words_appearing_once(text):\n    \"\"\"\n    Determine words that appear exactly once in a text\n    params: text (string)\n    returns: list of words that appear exactly once (list of strings)\n    \"\"\"\n    words = text.split()\n    count = Counter(words)\n    return [word for word in count if count[word] == 1]"
+    },
+    {
+        "type": "Array",
+        "specifications": "Identify the repeated value in an array\nparams: array of integers\nreturns: repeated value (integer)",
+        "code": "def find_repeated_value(arr):\n    \"\"\"\n    Identify the repeated value in an array\n    params: array of integers\n    returns: repeated value (integer)\n    \"\"\"\n    seen = set()\n    for num in arr:\n        if num in seen:\n            return num\n        seen.add(num)"
+    },
+    {
+        "type": "Array",
+        "specifications": "Determine the majority element in an array\nparams: array of integers\nreturns: majority element (integer)",
+        "code": "def find_majority_element(arr):\n    \"\"\"\n    Determine the majority element in an array\n    params: array of integers\n    returns: majority element (integer)\n    \"\"\"\n    count = Counter(arr)\n    n = len(arr)\n    for num in count:\n        if count[num] > n // 2:\n            return num"
+    },
+    {
+        "type": "Array",
+        "specifications": "Find the k-th largest element in an array\nparams: array of integers, integer k\nreturns: k-th largest element (integer)",
+        "code": "def kth_largest_element(arr, k):\n    \"\"\"\n    Find the k-th largest element in an array\n    params: array of integers, integer k\n    returns: k-th largest element (integer)\n    \"\"\"\n    return sorted(arr, reverse=True)[k-1]"
+    },
+    {
+        "type": "Binary",
+        "specifications": "Generate all binary numbers from 1 to n\nparams: integer n\nreturns: list of binary numbers (list of strings)",
+        "code": "def generate_binary_numbers(n):\n    \"\"\"\n    Generate all binary numbers from 1 to n\n    params: integer n\n    returns: list of binary numbers (list of strings)\n    \"\"\"\n    return [bin(i)[2:] for i in range(1, n+1)]"
+    },
+    {
+        "type": "Matrix",
+        "specifications": "Calculate the sum of elements in submatrices identified by pairs of coordinates\nparams: matrix (list of lists), list of pairs of coordinates\nreturns: list of sums for each submatrix (list of integers)",
+        "code": "def sum_submatrices(matrix, pairs):\n    \"\"\"\n    Calculate the sum of elements in submatrices identified by pairs of coordinates\n    params: matrix (list of lists), list of pairs of coordinates\n    returns: list of sums for each submatrix (list of integers)\n    \"\"\"\n    sums = []\n    for (p, q), (r, s) in pairs:\n        submatrix_sum = sum(matrix[i][j] for i in range(p, r+1) for j in range(q, s+1))\n        sums.append(submatrix_sum)\n    return sums"
+    },
+    {
+        "type": "Matrix",
+        "specifications": "Identify the row with the most 1s in a binary matrix sorted by rows\nparams: binary matrix (list of lists)\nreturns: index of the row with the most 1s (integer)",
+        "code": "def row_with_most_ones(matrix):\n    \"\"\"\n    Identify the row with the most 1s in a binary matrix sorted by rows\n    params: binary matrix (list of lists)\n    returns: index of the row with the most 1s (integer)\n    \"\"\"\n    max_ones = 0\n    max_row = -1\n    for i, row in enumerate(matrix):\n        count = row.count(1)\n        if count > max_ones:\n            max_ones = count\n            max_row = i\n    return max_row"
+    },
+    {
+        "type": "Matrix",
+        "specifications": "Replace all 0s surrounded by 1s with 1s in a binary matrix\nparams: binary matrix (list of lists)\nreturns: modified matrix (list of lists)",
+        "code": "def replace_surrounded_zeros(matrix):\n    \"\"\"\n    Replace all 0s surrounded by 1s with 1s in a binary matrix\n    params: binary matrix (list of lists)\n    returns: modified matrix (list of lists)\n    \"\"\"\n    def is_surrounded(matrix, i, j, visited):\n        if i < 0 or j < 0 or i >= len(matrix) or j >= len(matrix[0]) or matrix[i][j] == 1 or visited[i][j]:\n            return True\n        if i == 0 or j == 0 or i == len(matrix) - 1 or j == len(matrix[0]) - 1:\n            return False\n        visited[i][j] = True\n        return (is_surrounded(matrix, i+1, j, visited) and\n                is_surrounded(matrix, i-1, j, visited) and\n                is_surrounded(matrix, i, j+1, visited) and\n                is_surrounded(matrix, i, j-1, visited))\n\n    visited = [[False] * len(matrix[0]) for _ in range(len(matrix))]\n    for i in range(len(matrix)):\n        for j in range(len(matrix[0])):\n            if matrix[i][j] == 0 and is_surrounded(matrix, i, j, visited):\n                matrix[i][j] = 1\n    return matrix"
+    },
+  {
+        "type": "String",
+        "specifications": "Determine the last (alphabetically) word in a text containing multiple words separated by spaces\nparams: text (string)\nreturns: last word (string)",
+        "code": "def last_alphabetical_word(text):\n    \"\"\"\n    Determine the last (alphabetically) word in a text containing multiple words separated by spaces\n    params: text (string)\n    returns: last word (string)\n    \"\"\"\n    words = text.split()\n    return max(words)"
+    },
+    {
+        "type": "Math",
+        "specifications": "Calculate the Euclidean distance between two points\nparams: two tuples representing the coordinates of the points\nreturns: Euclidean distance (float)",
+        "code": "def euclidean_distance(point1, point2):\n    \"\"\"\n    Calculate the Euclidean distance between two points\n    params: two tuples representing the coordinates of the points\n    returns: Euclidean distance (float)\n    \"\"\"\n    return ((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2) ** 0.5"
+    },
+    {
+        "type": "Math",
+        "specifications": "Calculate the dot product of two sparse vectors\nparams: two lists of real numbers\nreturns: dot product (float)",
+        "code": "def dot_product_sparse_vectors(vec1, vec2):\n    \"\"\"\n    Calculate the dot product of two sparse vectors\n    params: two lists of real numbers\n    returns: dot product (float)\n    \"\"\"\n    return sum(x * y for x, y in zip(vec1, vec2) if x != 0 and y != 0)"
+    },
+    {
+        "type": "String",
+        "specifications": "Determine words that appear exactly once in a text\nparams: text (string)\nreturns: list of words that appear exactly once (list of strings)",
+        "code": "from collections import Counter\n\ndef words_appearing_once(text):\n    \"\"\"\n    Determine words that appear exactly once in a text\n    params: text (string)\n    returns: list of words that appear exactly once (list of strings)\n    \"\"\"\n    words = text.split()\n    count = Counter(words)\n    return [word for word in count if count[word] == 1]"
+    },
+    {
+        "type": "Array",
+        "specifications": "Identify the repeated value in an array\nparams: array of integers\nreturns: repeated value (integer)",
+        "code": "def find_repeated_value(arr):\n    \"\"\"\n    Identify the repeated value in an array\n    params: array of integers\n    returns: repeated value (integer)\n    \"\"\"\n    seen = set()\n    for num in arr:\n        if num in seen:\n            return num\n        seen.add(num)"
+    },
+    {
+        "type": "Array",
+        "specifications": "Determine the majority element in an array\nparams: array of integers\nreturns: majority element (integer)",
+        "code": "def find_majority_element(arr):\n    \"\"\"\n    Determine the majority element in an array\n    params: array of integers\n    returns: majority element (integer)\n    \"\"\"\n    count = Counter(arr)\n    n = len(arr)\n    for num in count:\n        if count[num] > n // 2:\n            return num"
+    },
+    {
+        "type": "Array",
+        "specifications": "Find the k-th largest element in an array\nparams: array of integers, integer k\nreturns: k-th largest element (integer)",
+        "code": "def kth_largest_element(arr, k):\n    \"\"\"\n    Find the k-th largest element in an array\n    params: array of integers, integer k\n    returns: k-th largest element (integer)\n    \"\"\"\n    return sorted(arr, reverse=True)[k-1]"
+    },
+    {
+        "type": "Binary",
+        "specifications": "Generate all binary numbers from 1 to n\nparams: integer n\nreturns: list of binary numbers (list of strings)",
+        "code": "def generate_binary_numbers(n):\n    \"\"\"\n    Generate all binary numbers from 1 to n\n    params: integer n\n    returns: list of binary numbers (list of strings)\n    \"\"\"\n    return [bin(i)[2:] for i in range(1, n+1)]"
+    },
+    {
+        "type": "Matrix",
+        "specifications": "Calculate the sum of elements in submatrices identified by pairs of coordinates\nparams: matrix (list of lists), list of pairs of coordinates\nreturns: list of sums for each submatrix (list of integers)",
+        "code": "def sum_submatrices(matrix, pairs):\n    \"\"\"\n    Calculate the sum of elements in submatrices identified by pairs of coordinates\n    params: matrix (list of lists), list of pairs of coordinates\n    returns: list of sums for each submatrix (list of integers)\n    \"\"\"\n    sums = []\n    for (p, q), (r, s) in pairs:\n        submatrix_sum = sum(matrix[i][j] for i in range(p, r+1) for j in range(q, s+1))\n        sums.append(submatrix_sum)\n    return sums"
+    },
+    {
+        "type": "Matrix",
+        "specifications": "Identify the row with the most 1s in a binary matrix sorted by rows\nparams: binary matrix (list of lists)\nreturns: index of the row with the most 1s (integer)",
+        "code": "def row_with_most_ones(matrix):\n    \"\"\"\n    Identify the row with the most 1s in a binary matrix sorted by rows\n    params: binary matrix (list of lists)\n    returns: index of the row with the most 1s (integer)\n    \"\"\"\n    max_ones = 0\n    max_row = -1\n    for i, row in enumerate(matrix):\n        count = row.count(1)\n        if count > max_ones:\n            max_ones = count\n            max_row = i\n    return max_row"
+    },
+    {
+        "type": "Matrix",
+        "specifications": "Replace all 0s surrounded by 1s with 1s in a binary matrix\nparams: binary matrix (list of lists)\nreturns: modified matrix (list of lists)",
+        "code": "def replace_surrounded_zeros(matrix):\n    \"\"\"\n    Replace all 0s surrounded by 1s with 1s in a binary matrix\n    params: binary matrix (list of lists)\n    returns: modified matrix (list of lists)\n    \"\"\"\n    def is_surrounded(matrix, i, j, visited):\n        if i < 0 or j < 0 or i >= len(matrix) or j >= len(matrix[0]) or matrix[i][j] == 1 or visited[i][j]:\n            return True\n        if i == 0 or j == 0 or i == len(matrix) - 1 or j == len(matrix[0]) - 1:\n            return False\n        visited[i][j] = True\n        return (is_surrounded(matrix, i+1, j, visited) and\n                is_surrounded(matrix, i-1, j, visited) and\n                is_surrounded(matrix, i, j+1, visited) and\n                is_surrounded(matrix, i, j-1, visited))\n\n    visited = [[False] * len(matrix[0]) for _ in range(len(matrix))]\n    for i in range(len(matrix)):\n        for j in range(len(matrix[0])):\n            if matrix[i][j] == 0 and is_surrounded(matrix, i, j, visited):\n                matrix[i][j] = 1\n    return matrix"
+    }
+
+,
+    {
+        "type": "Sorting",
+        "specifications": "HeapSort algorithm - Sorts a list of integers\nparams: list of integers\nreturns: sorted list of integers",
+        "code": "def heap_sort(arr):\n    \"\"\"\n    HeapSort algorithm - Sorts a list of integers\n    params: list of integers\n    returns: sorted list of integers\n    \"\"\"\n    def heapify(arr, n, i):\n        largest = i\n        l = 2 * i + 1\n        r = 2 * i + 2\n        if l < n and arr[i] < arr[l]:\n            largest = l\n        if r < n and arr[largest] < arr[r]:\n            largest = r\n        if largest != i:\n            arr[i], arr[largest] = arr[largest], arr[i]\n            heapify(arr, n, largest)\n    n = len(arr)\n    for i in range(n // 2 - 1, -1, -1):\n        heapify(arr, n, i)\n    for i in range(n-1, 0, -1):\n        arr[i], arr[0] = arr[0], arr[i]\n        heapify(arr, i, 0)\n    return arr"
+    },
+    {
+        "type": "Search",
+        "specifications": "Jump Search algorithm - Searches for a target value within a sorted list\nparams: sorted list of integers, target integer\nreturns: index of target if found, else -1",
+        "code": "import math\n\ndef jump_search(arr, target):\n    \"\"\"\n    Jump Search algorithm - Searches for a target value within a sorted list\n    params: sorted list of integers, target integer\n    returns: index of target if found, else -1\n    \"\"\"\n    n = len(arr)\n    step = int(math.sqrt(n))\n    prev = 0\n    while arr[min(step, n)-1] < target:\n        prev = step\n        step += int(math.sqrt(n))\n        if prev >= n:\n            return -1\n    while arr[prev] < target:\n        prev += 1\n        if prev == min(step, n):\n            return -1\n    if arr[prev] == target:\n        return prev\n    return -1"
+    },
+    {
+        "type": "Graph",
+        "specifications": "Floyd-Warshall algorithm - Finds shortest paths between all pairs of vertices\nparams: graph represented as an adjacency matrix\nreturns: shortest paths matrix",
+        "code": "def floyd_warshall(graph):\n    \"\"\"\n    Floyd-Warshall algorithm - Finds shortest paths between all pairs of vertices\n    params: graph represented as an adjacency matrix\n    returns: shortest paths matrix\n    \"\"\"\n    dist = list(map(lambda i: list(map(lambda j: j, i)), graph))\n    for k in range(len(graph)):\n        for i in range(len(graph)):\n            for j in range(len(graph)):\n                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])\n    return dist"
+    },
+    {
+        "type": "Dynamic Programming",
+        "specifications": "Coin Change problem - Finds the minimum number of coins needed to make a given amount\nparams: list of coin denominations, integer amount\nreturns: minimum number of coins (integer)",
+        "code": "def coin_change(coins, amount):\n    \"\"\"\n    Coin Change problem - Finds the minimum number of coins needed to make a given amount\n    params: list of coin denominations, integer amount\n    returns: minimum number of coins (integer)\n    \"\"\"\n    dp = [float('inf')] * (amount + 1)\n    dp[0] = 0\n    for coin in coins:\n        for x in range(coin, amount + 1):\n            dp[x] = min(dp[x], dp[x - coin] + 1)\n    return dp[amount] if dp[amount] != float('inf') else -1"
+    },
+    {
+        "type": "String",
+        "specifications": "Anagram Check - Checks if two strings are anagrams\nparams: two strings\nreturns: True if anagrams, False otherwise",
+        "code": "def are_anagrams(str1, str2):\n    \"\"\"\n    Anagram Check - Checks if two strings are anagrams\n    params: two strings\n    returns: True if anagrams, False otherwise\n    \"\"\"\n    return sorted(str1) == sorted(str2)"
+    },
+    {
+        "type": "Math",
+        "specifications": "Greatest Common Divisor (GCD) using recursion\nparams: two integers\nreturns: GCD (integer)",
+        "code": "def gcd_recursive(a, b):\n    \"\"\"\n    Greatest Common Divisor (GCD) using recursion\n    params: two integers\n    returns: GCD (integer)\n    \"\"\"\n    if b == 0:\n        return a\n    else:\n        return gcd_recursive(b, a % b)"
+    },
+    {
+        "type": "Math",
+        "specifications": "Least Common Multiple (LCM) using GCD\nparams: two integers\nreturns: LCM (integer)",
+        "code": "def lcm(a, b):\n    \"\"\"\n    Least Common Multiple (LCM) using GCD\n    params: two integers\n    returns: LCM (integer)\n    \"\"\"\n    return abs(a*b) // gcd_recursive(a, b)"
+    },
+    {
+        "type": "Data Structures",
+        "specifications": "Max Heap implementation using list\nmethods: insert, extract_max, max_heapify",
+        "code": "class MaxHeap:\n    \"\"\"\n    Max Heap implementation using list\n    methods: insert, extract_max, max_heapify\n    \"\"\"\n    def __init__(self):\n        self.heap = []\n\n    def insert(self, val):\n        self.heap.append(val)\n        self._heapify_up(len(self.heap) - 1)\n\n    def extract_max(self):\n        if len(self.heap) == 0:\n            return None\n        if len(self.heap) == 1:\n            return self.heap.pop()\n        root = self.heap[0]\n        self.heap[0] = self.heap.pop()\n        self._heapify_down(0)\n        return root\n\n    def _heapify_up(self, index):\n        parent = (index - 1) // 2\n        if index > 0 and self.heap[index] > self.heap[parent]:\n            self.heap[index], self.heap[parent] = self.heap[parent], self.heap[index]\n            self._heapify_up(parent)\n\n    def _heapify_down(self, index):\n        left = 2 * index + 1\n        right = 2 * index + 2\n        largest = index\n        if left < len(self.heap) and self.heap[left] > self.heap[largest]:\n            largest = left\n        if right < len(self.heap) and self.heap[right] > self.heap[largest]:\n            largest = right\n        if largest != index:\n            self.heap[index], self.heap[largest] = self.heap[largest], self.heap[index]\n            self._heapify_down(largest)"
+    },
+    {
+        "type": "Graph",
+        "specifications": "Bellman-Ford algorithm - Finds shortest paths from a single source vertex to all other vertices\nparams: graph represented as a list of edges, number of vertices, source vertex\nreturns: list of shortest distances from source to each vertex",
+        "code": "def bellman_ford(edges, vertices, src):\n    \"\"\"\n    Bellman-Ford algorithm - Finds shortest paths from a single source vertex to all other vertices\n    params: graph represented as a list of edges, number of vertices, source vertex\n    returns: list of shortest distances from source to each vertex\n    \"\"\"\n    dist = [float('inf')] * vertices\n    dist[src] = 0\n    for _ in range(vertices - 1):\n        for u, v, w in edges:\n            if dist[u] != float('inf') and dist[u] + w < dist[v]:\n                dist[v] = dist[u] + w\n    for u, v, w in edges:\n        if dist[u] != float('inf') and dist[u] + w < dist[v]:\n            raise ValueError('Graph contains a negative weight cycle')\n    return dist"
+    },
+    {
+        "type": "String",
+        "specifications": "Remove all duplicates from a string\nparams: string\nreturns: string with duplicates removed",
+        "code": "def remove_duplicates(s):\n    \"\"\"\n    Remove all duplicates from a string\n    params: string\n    returns: string with duplicates removed\n    \"\"\"\n    return ''.join(sorted(set(s), key=s.index))"
+    },
+    {
+        "type": "Array",
+        "specifications": "Find the maximum subarray sum using Kadane's algorithm\nparams: array of integers\nreturns: maximum subarray sum (integer)",
+        "code": "def max_subarray_sum(arr):\n    \"\"\"\n    Find the maximum subarray sum using Kadane's algorithm\n    params: array of integers\n    returns: maximum subarray sum (integer)\n    \"\"\"\n    max_so_far = arr[0]\n    max_ending_here = arr[0]\n    for i in range(1, len(arr)):\n        max_ending_here = max(arr[i], max_ending_here + arr[i])\n        max_so_far = max(max_so_far, max_ending_here)\n    return max_so_far"
+    },
+    {
+        "type": "Data Structures",
+        "specifications": "Doubly Linked List implementation\nmethods: append, prepend, delete, find",
+        "code": "class Node:\n    def __init__(self, data=None):\n        self.data = data\n        self.next = None\n        self.prev = None\n\nclass DoublyLinkedList:\n    \"\"\"\n    Doubly Linked List implementation\n    methods: append, prepend, delete, find\n    \"\"\"\n    def __init__(self):\n        self.head = None\n\n    def append(self, data):\n        new_node = Node(data)\n        if self.head is None:\n            self.head = new_node\n            return\n        last = self.head\n        while last.next:\n            last = last.next\n        last.next = new_node\n        new_node.prev = last\n\n    def prepend(self, data):\n        new_node = Node(data)\n        if self.head is None:\n            self.head = new_node\n            return\n        self.head.prev = new_node\n        new_node.next = self.head\n        self.head = new_node\n\n    def delete(self, key):\n        temp = self.head\n        while temp:\n            if temp.data == key:\n                if temp.prev:\n                    temp.prev.next = temp.next\n                if temp.next:\n                    temp.next.prev = temp.prev\n                if temp == self.head:\n                    self.head = temp.next\n                temp = None\n                return\n            temp = temp.next\n\n    def find(self, key):\n        temp = self.head\n        while temp:\n            if temp.data == key:\n                return True\n            temp = temp.next\n        return False"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Factorial using iteration\nparams: integer n\nreturns: factorial of n (integer)",
+        "code": "def factorial_iterative(n):\n    \"\"\"\n    Factorial using iteration\n    params: integer n\n    returns: factorial of n (integer)\n    \"\"\"\n    result = 1\n    for i in range(2, n+1):\n        result *= i\n    return result"
+    },
+    {
+        "type": "Math",
+        "specifications": "Check if a number is even or odd\nparams: integer n\nreturns: 'Even' or 'Odd' (string)",
+        "code": "def is_even_or_odd(n):\n    \"\"\"\n    Check if a number is even or odd\n    params: integer n\n    returns: 'Even' or 'Odd' (string)\n    \"\"\"\n    return 'Even' if n % 2 == 0 else 'Odd'"
+    },
+    {
+        "type": "Math",
+        "specifications": "Calculate the power of a number\nparams: base (float), exponent (integer)\nreturns: result (float)",
+        "code": "def power(base, exp):\n    \"\"\"\n    Calculate the power of a number\n    params: base (float), exponent (integer)\n    returns: result (float)\n    \"\"\"\n    if exp == 0:\n        return 1\n    elif exp < 0:\n        return 1 / power(base, -exp)\n    else:\n        result = 1\n        for _ in range(exp):\n            result *= base\n        return result"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Reverse a string\nparams: string\nreturns: reversed string",
+        "code": "def reverse_string(s):\n    \"\"\"\n    Reverse a string\n    params: string\n    returns: reversed string\n    \"\"\"\n    return s[::-1]"
+    },
+    {
+        "type": "Math",
+        "specifications": "Calculate the sum of digits of a number\nparams: integer n\nreturns: sum of digits (integer)",
+        "code": "def sum_of_digits(n):\n    \"\"\"\n    Calculate the sum of digits of a number\n    params: integer n\n    returns: sum of digits (integer)\n    \"\"\"\n    return sum(int(digit) for digit in str(n))"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Check if a string is a palindrome\nparams: string\nreturns: True if palindrome, False otherwise",
+        "code": "def is_palindrome_string(s):\n    \"\"\"\n    Check if a string is a palindrome\n    params: string\n    returns: True if palindrome, False otherwise\n    \"\"\"\n    return s == s[::-1]"
+    },
+{
+        "type": "Sorting",
+        "specifications": "Shell Sort algorithm - Sorts a list of integers\nparams: list of integers\nreturns: sorted list of integers",
+        "code": "def shell_sort(arr):\n    \"\"\"\n    Shell Sort algorithm - Sorts a list of integers\n    params: list of integers\n    returns: sorted list of integers\n    \"\"\"\n    n = len(arr)\n    gap = n // 2\n    while gap > 0:\n        for i in range(gap, n):\n            temp = arr[i]\n            j = i\n            while j >= gap and arr[j - gap] > temp:\n                arr[j] = arr[j - gap]\n                j -= gap\n            arr[j] = temp\n        gap //= 2\n    return arr"
+    },
+    {
+        "type": "Graph",
+        "specifications": "Kahn's algorithm for Topological Sorting\nparams: graph represented as an adjacency list\nreturns: list of vertices in topological order",
+        "code": "from collections import deque\n\ndef kahn_topological_sort(graph):\n    \"\"\"\n    Kahn's algorithm for Topological Sorting\n    params: graph represented as an adjacency list\n    returns: list of vertices in topological order\n    \"\"\"\n    in_degree = {u: 0 for u in graph}\n    for u in graph:\n        for v in graph[u]:\n            in_degree[v] += 1\n    queue = deque([u for u in graph if in_degree[u] == 0])\n    topo_order = []\n    while queue:\n        u = queue.popleft()\n        topo_order.append(u)\n        for v in graph[u]:\n            in_degree[v] -= 1\n            if in_degree[v] == 0:\n                queue.append(v)\n    if len(topo_order) == len(graph):\n        return topo_order\n    else:\n        return []  # Graph has a cycle"
+    },
+    {
+        "type": "Dynamic Programming",
+        "specifications": "Longest Palindromic Substring\nparams: string\nreturns: longest palindromic substring (string)",
+        "code": "def longest_palindromic_substring(s):\n    \"\"\"\n    Longest Palindromic Substring\n    params: string\n    returns: longest palindromic substring (string)\n    \"\"\"\n    n = len(s)\n    if n == 0:\n        return ''\n    dp = [[False] * n for _ in range(n)]\n    start = 0\n    max_length = 1\n    for i in range(n):\n        dp[i][i] = True\n    for length in range(2, n + 1):\n        for i in range(n - length + 1):\n            j = i + length - 1\n            if s[i] == s[j]:\n                if length == 2 or dp[i + 1][j - 1]:\n                    dp[i][j] = True\n                    if length > max_length:\n                        start = i\n                        max_length = length\n    return s[start:start + max_length]"
+    },
+    {
+        "type": "String",
+        "specifications": "Find all permutations of a string\nparams: string\nreturns: list of permutations (list of strings)",
+        "code": "def permutations(s):\n    \"\"\"\n    Find all permutations of a string\n    params: string\n    returns: list of permutations (list of strings)\n    \"\"\"\n    if len(s) == 1:\n        return [s]\n    perms = permutations(s[1:])\n    char = s[0]\n    result = []\n    for perm in perms:\n        for i in range(len(perm) + 1):\n            result.append(perm[:i] + char + perm[i:])\n    return result"
+    },
+    {
+        "type": "Math",
+        "specifications": "Check if a number is a perfect square\nparams: integer n\nreturns: True if n is a perfect square, False otherwise",
+        "code": "def is_perfect_square(n):\n    \"\"\"\n    Check if a number is a perfect square\n    params: integer n\n    returns: True if n is a perfect square, False otherwise\n    \"\"\"\n    if n < 0:\n        return False\n    root = int(n ** 0.5)\n    return n == root * root"
+    },
+    {
+        "type": "Array",
+        "specifications": "Rotate an array to the right by k steps\nparams: array of integers, integer k\nreturns: rotated array (list of integers)",
+        "code": "def rotate_array(arr, k):\n    \"\"\"\n    Rotate an array to the right by k steps\n    params: array of integers, integer k\n    returns: rotated array (list of integers)\n    \"\"\"\n    n = len(arr)\n    k %= n\n    return arr[-k:] + arr[:-k]"
+    },
+    {
+        "type": "Math",
+        "specifications": "Calculate the n-th triangular number\nparams: integer n\nreturns: n-th triangular number (integer)",
+        "code": "def triangular_number(n):\n    \"\"\"\n    Calculate the n-th triangular number\n    params: integer n\n    returns: n-th triangular number (integer)\n    \"\"\"\n    return n * (n + 1) // 2"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Check if a year is a leap year\nparams: integer year\nreturns: True if leap year, False otherwise",
+        "code": "def is_leap_year(year):\n    \"\"\"\n    Check if a year is a leap year\n    params: integer year\n    returns: True if leap year, False otherwise\n    \"\"\"\n    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)"
+    },
+    {
+        "type": "Array",
+        "specifications": "Find the intersection of two arrays\nparams: two arrays of integers\nreturns: intersection array (list of integers)",
+        "code": "def intersection_of_arrays(arr1, arr2):\n    \"\"\"\n    Find the intersection of two arrays\n    params: two arrays of integers\n    returns: intersection array (list of integers)\n    \"\"\"\n    return list(set(arr1) & set(arr2))"
+    },
+    {
+        "type": "Math",
+        "specifications": "Calculate the binomial coefficient (n choose k)\nparams: integers n and k\nreturns: binomial coefficient (integer)",
+        "code": "def binomial_coefficient(n, k):\n    \"\"\"\n    Calculate the binomial coefficient (n choose k)\n    params: integers n and k\n    returns: binomial coefficient (integer)\n    \"\"\"\n    if k > n:\n        return 0\n    if k == 0 or k == n:\n        return 1\n    return binomial_coefficient(n-1, k-1) + binomial_coefficient(n-1, k)"
+    },
+    {
+        "type": "Array",
+        "specifications": "Find the maximum product of two integers in an array\nparams: array of integers\nreturns: maximum product (integer)",
+        "code": "def max_product_of_two(arr):\n    \"\"\"\n    Find the maximum product of two integers in an array\n    params: array of integers\n    returns: maximum product (integer)\n    \"\"\"\n    arr.sort()\n    return max(arr[0] * arr[1], arr[-1] * arr[-2])"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Convert a decimal number to binary\nparams: integer n\nreturns: binary representation (string)",
+        "code": "def decimal_to_binary(n):\n    \"\"\"\n    Convert a decimal number to binary\n    params: integer n\n    returns: binary representation (string)\n    \"\"\"\n    return bin(n)[2:]"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Find the sum of the first n natural numbers\nparams: integer n\nreturns: sum (integer)",
+        "code": "def sum_of_natural_numbers(n):\n    \"\"\"\n    Find the sum of the first n natural numbers\n    params: integer n\n    returns: sum (integer)\n    \"\"\"\n    return n * (n + 1) // 2"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Check if a string is a valid palindrome considering only alphanumeric characters\nparams: string\nreturns: True if valid palindrome, False otherwise",
+        "code": "def is_valid_palindrome(s):\n    \"\"\"\n    Check if a string is a valid palindrome considering only alphanumeric characters\n    params: string\n    returns: True if valid palindrome, False otherwise\n    \"\"\"\n    s = ''.join(char.lower() for char in s if char.isalnum())\n    return s == s[::-1]"
+    },
+    {
+        "type": "String",
+        "specifications": "Find the first non-repeating character in a string\nparams: string\nreturns: first non-repeating character (string) or None if all characters repeat",
+        "code": "def first_non_repeating_character(s):\n    \"\"\"\n    Find the first non-repeating character in a string\n    params: string\n    returns: first non-repeating character (string) or None if all characters repeat\n    \"\"\"\n    count = Counter(s)\n    for char in s:\n        if count[char] == 1:\n            return char\n    return None"
+    },
+    {
+        "type": "Array",
+        "specifications": "Find the common elements in three sorted arrays\nparams: three sorted arrays of integers\nreturns: list of common elements (list of integers)",
+        "code": "def common_elements_three_sorted_arrays(arr1, arr2, arr3):\n    \"\"\"\n    Find the common elements in three sorted arrays\n    params: three sorted arrays of integers\n    returns: list of common elements (list of integers)\n    \"\"\"\n    i = j = k = 0\n    result = []\n    while i < len(arr1) and j < len(arr2) and k < len(arr3):\n        if arr1[i] == arr2[j] == arr3[k]:\n            result.append(arr1[i])\n            i += 1\n            j += 1\n            k += 1\n        elif arr1[i] < arr2[j]:\n            i += 1\n        elif arr2[j] < arr3[k]:\n            j += 1\n        else:\n            k += 1\n    return result"
+    },
+    {
+        "type": "Array",
+        "specifications": "Find the maximum sum of a subarray of size k\nparams: array of integers, integer k\nreturns: maximum sum (integer)",
+        "code": "def max_sum_subarray_of_size_k(arr, k):\n    \"\"\"\n    Find the maximum sum of a subarray of size k\n    params: array of integers, integer k\n    returns: maximum sum (integer)\n    \"\"\"\n    n = len(arr)\n    max_sum = 0\n    window_sum = sum(arr[:k])\n    for i in range(n - k):\n        window_sum = window_sum - arr[i] + arr[i + k]\n        max_sum = max(max_sum, window_sum)\n    return max_sum"
+    },
+    {
+        "type": "Array",
+        "specifications": "Find the first missing positive integer\nparams: array of integers\nreturns: first missing positive integer (integer)",
+        "code": "def first_missing_positive(arr):\n    \"\"\"\n    Find the first missing positive integer\n    params: array of integers\n    returns: first missing positive integer (integer)\n    \"\"\"\n    n = len(arr)\n    for i in range(n):\n        while 1 <= arr[i] <= n and arr[arr[i] - 1] != arr[i]:\n            arr[arr[i] - 1], arr[i] = arr[i], arr[arr[i] - 1]\n    for i in range(n):\n        if arr[i] != i + 1:\n            return i + 1\n    return n + 1"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Count the number of vowels in a string\nparams: string\nreturns: number of vowels (integer)",
+        "code": "def count_vowels(s):\n    \"\"\"\n    Count the number of vowels in a string\n    params: string\n    returns: number of vowels (integer)\n    \"\"\"\n    return sum(1 for char in s if char.lower() in 'aeiou')"
+    },
+    {
+        "type": "Array",
+        "specifications": "Move all zeros to the end of an array\nparams: array of integers\nreturns: modified array with zeros moved to the end (list of integers)",
+        "code": "def move_zeros_to_end(arr):\n    \"\"\"\n    Move all zeros to the end of an array\n    params: array of integers\n    returns: modified array with zeros moved to the end (list of integers)\n    \"\"\"\n    non_zero_count = 0\n    for i in range(len(arr)):\n        if arr[i] != 0:\n            arr[non_zero_count], arr[i] = arr[i], arr[non_zero_count]\n            non_zero_count += 1\n    return arr"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Generate the Fibonacci sequence up to n terms\nparams: integer n\nreturns: Fibonacci sequence (list of integers)",
+        "code": "def fibonacci_sequence(n):\n    \"\"\"\n    Generate the Fibonacci sequence up to n terms\n    params: integer n\n    returns: Fibonacci sequence (list of integers)\n    \"\"\"\n    seq = [0, 1]\n    while len(seq) < n:\n        seq.append(seq[-1] + seq[-2])\n    return seq[:n]"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Find the greatest common divisor (GCD) of two numbers\nparams: two integers\nreturns: GCD (integer)",
+        "code": "def gcd(a, b):\n    \"\"\"\n    Find the greatest common divisor (GCD) of two numbers\n    params: two integers\n    returns: GCD (integer)\n    \"\"\"\n    while b:\n        a, b = b, a % b\n    return a"
+    },
+    {
+        "type": "Math",
+        "specifications": "Calculate the least common multiple (LCM) of two numbers\nparams: two integers\nreturns: LCM (integer)",
+        "code": "def lcm(a, b):\n    \"\"\"\n    Calculate the least common multiple (LCM) of two numbers\n    params: two integers\n    returns: LCM (integer)\n    \"\"\"\n    return abs(a * b) // gcd(a, b)"
+    },
+    {
+        "type": "Array",
+        "specifications": "Find the length of the longest increasing subsequence\nparams: array of integers\nreturns: length of the longest increasing subsequence (integer)",
+        "code": "def longest_increasing_subsequence(arr):\n    \"\"\"\n    Find the length of the longest increasing subsequence\n    params: array of integers\n    returns: length of the longest increasing subsequence (integer)\n    \"\"\"\n    if not arr:\n        return 0\n    lis = [1] * len(arr)\n    for i in range(1, len(arr)):\n        for j in range(i):\n            if arr[i] > arr[j]:\n                lis[i] = max(lis[i], lis[j] + 1)\n    return max(lis)"
+    },
+    {
+        "type": "Array",
+        "specifications": "Find the length of the longest contiguous subarray with sum k\nparams: array of integers, integer k\nreturns: length of the longest contiguous subarray (integer)",
+        "code": "def longest_subarray_with_sum_k(arr, k):\n    \"\"\"\n    Find the length of the longest contiguous subarray with sum k\n    params: array of integers, integer k\n    returns: length of the longest contiguous subarray (integer)\n    \"\"\"\n    sum_map = {}\n    curr_sum = 0\n    max_len = 0\n    for i in range(len(arr)):\n        curr_sum += arr[i]\n        if curr_sum == k:\n            max_len = i + 1\n        if curr_sum - k in sum_map:\n            max_len = max(max_len, i - sum_map[curr_sum - k])\n        if curr_sum not in sum_map:\n            sum_map[curr_sum] = i\n    return max_len"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Check if a string is an anagram of another string\nparams: two strings\nreturns: True if anagrams, False otherwise",
+        "code": "def is_anagram(str1, str2):\n    \"\"\"\n    Check if a string is an anagram of another string\n    params: two strings\n    returns: True if anagrams, False otherwise\n    \"\"\"\n    return sorted(str1) == sorted(str2)"
+    },
+    {
+        "type": "Math",
+        "specifications": "Calculate the factorial of a number using recursion\nparams: integer n\nreturns: factorial of n (integer)",
+        "code": "def factorial_recursive(n):\n    \"\"\"\n    Calculate the factorial of a number using recursion\n    params: integer n\n    returns: factorial of n (integer)\n    \"\"\"\n    if n == 0:\n        return 1\n    return n * factorial_recursive(n - 1)"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Generate a list of prime numbers up to a given limit using the Sieve of Eratosthenes\nparams: integer limit\nreturns: list of prime numbers (list of integers)",
+        "code": "def sieve_of_eratosthenes(limit):\n    \"\"\"\n    Generate a list of prime numbers up to a given limit using the Sieve of Eratosthenes\n    params: integer limit\n    returns: list of prime numbers (list of integers)\n    \"\"\"\n    primes = [True] * (limit + 1)\n    p = 2\n    while p * p <= limit:\n        if primes[p]:\n            for i in range(p * p, limit + 1, p):\n                primes[i] = False\n        p += 1\n    return [p for p in range(2, limit + 1) if primes[p]]"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Find the maximum element in an array\nparams: array of integers\nreturns: maximum element (integer)",
+        "code": "def find_max_element(arr):\n    \"\"\"\n    Find the maximum element in an array\n    params: array of integers\n    returns: maximum element (integer)\n    \"\"\"\n    return max(arr)"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Reverse an array\nparams: array of integers\nreturns: reversed array (list of integers)",
+        "code": "def reverse_array(arr):\n    \"\"\"\n    Reverse an array\n    params: array of integers\n    returns: reversed array (list of integers)\n    \"\"\"\n    return arr[::-1]"
+    },
+    {
+        "type": "Basic Syntax",
+        "specifications": "Check if a string contains only unique characters\nparams: string\nreturns: True if unique, False otherwise",
+        "code": "def is_unique(s):\n    \"\"\"\n    Check if a string contains only unique characters\n    params: string\n    returns: True if unique, False otherwise\n    \"\"\"\n    return len(s) == len(set(s))"
+    }
+]
+
